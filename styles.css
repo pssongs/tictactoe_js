@@ -1,0 +1,58 @@
+html {
+  font-family: 'Prompt', sans-serif;
+  min-height: 100%;
+  background-color: rgb(219, 219, 219);
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #4c5c68;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 30px;
+  padding-top: 60px;
+}
+
+#gameField {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  height: 500px;
+  width: 500px;
+  border: 3px solid black;
+}
+
+.cell {
+  background-color: white;
+  border: 1px solid black;
+
+}
+
+.cell:hover {
+  background-color: antiquewhite;
+}
+
+#turn {
+  font-size: 50px;
+}
+
+#restart {
+  font-size: 30px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: darkslategray;
+  color: white;
+}
