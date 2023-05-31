@@ -96,6 +96,7 @@ const playGame = (() => {
   }
 }
 
+//Creates a nested array with possible combinations of the elements in the form of an array within the array given
   const combinations = (array) => {
     return new Array(1 << array.length).fill().map(
       (e1, i) => array.filter((e2, j) => i & 1 << j)).filter(a => a.length == 3);
