@@ -1,5 +1,9 @@
 const Player = (sign) => {
-  const getSign = () => sign;
+  this.sign = sign
+
+  const getSign = () => {
+    return sign
+  };
 
   return {getSign}
 }
@@ -13,38 +17,46 @@ const displayController = (() => {
     cells.forEach((cell) => {
       cell.textContent = ""
     })
-    playGame.reset
+    resetMessage()
+    playGame.reset()
+
   })
 
   cells.forEach((cell) => 
   cell.addEventListener('click', (e) => {
-    if (cell.textContent == "" && !playGame.gameOver){
+    if (cell.textContent == "" && !playGame.getIsOver()){
       playGame.turn() ? cell.textContent = "X" : cell.textContent = "O"
-      playGame.playRound(e.target.dataset.index)
+      changeTurn()
+      playGame.playRound(parseInt(e.target.dataset.index))
     }
   })
 )
 
+  const winMessage = () =>  {
+    message.textContent = `Congrats to Player ${playGame.getPlayer()}`
+  }
+
+  const changeTurn = () => message.textContent = `Player ${playGame.getPlayer()}'s turn`
+  const resetMessage = () => message.textContent = "Player X's turn"
+
+  return {winMessage}
 })();
-
-const GameBoard = (() => {
-  const grid = ["","","","","","","","",""]
-
-
-})()
 
 const playGame = (() => {
   const playerX = Player("X")
+  let xGrid = []
   const playerO = Player("O")
+  let oGrid = []
   let round = 1
   let gameOver = false
 
   const playRound = (i) => {
-    
     round++
+    add(i)
     isOver()
-
   }
+
+  const add = (i) => turn() ? xGrid.push(i) : oGrid.push(i)
 
   const isOver = () => {
     const winConditions = [
@@ -57,20 +69,52 @@ const playGame = (() => {
       [0, 4, 8],
       [2, 4, 6],
     ];
-  }
 
-
-  const turn = () => {
-    return round % 2
+    const checkArray = (array) => {
+      // Each of the nested arrays in winningArray
+      for (const winningCombination of winConditions) {
+          // Every number in the winningCombination is also in the provided array 
+          if (winningCombination.every(element => array.includes(element))) { 
+              return true; 
+          } 
+      }
+  
+      // No complete match
+      return false; 
   }
+  
+
+  let combo
+  turn() ? combo = combinations(xGrid.sort()) : combo = combinations(oGrid.sort())
+
+  for (let x = 0; x < combo.length; x++){
+    if(checkArray(combo[x])){
+      gameOver = true
+      console.log("Finally")
+      displayController.winMessage()
+    }
+  }
+}
+
+  const combinations = (array) => {
+    return new Array(1 << array.length).fill().map(
+      (e1, i) => array.filter((e2, j) => i & 1 << j)).filter(a => a.length == 3);
+  }
+  
+
+  const getPlayer = () => round % 2? playerO.getSign() : playerX.getSign()
+
+  const turn = () => round % 2
+  
+  const getIsOver = () => gameOver
 
   const reset = () => {
     gameOver = false
     round = 1
-    playerX.position.reset
-    playerO.position.reset
+    xGrid = []
+    oGrid = []
   }
 
-  return {playRound, turn, reset, gameOver}
+  return {playRound, turn, reset, getIsOver, getPlayer }
 
 })()
