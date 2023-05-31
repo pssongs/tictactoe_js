@@ -1,6 +1,5 @@
 html {
   font-family: 'Prompt', sans-serif;
-  min-height: 100%;
   background-color: rgb(219, 219, 219);
 }
 
@@ -59,4 +58,15 @@ header {
   border-radius: 15px;
   background-color: darkslategray;
   color: white;
+}
+
+@media (width <= 768px) {
+  #gameField {
+    height: 300px;
+    width: 300px;
+  }
+
+  #turn {
+    font-size: 40px;
+  }
 }
